@@ -1,0 +1,10 @@
+#+TITLE: The thermodynamics of the dehydration of gypsum
+
+The production of the hemihydrate bassanite from gypsum is an oddity
+amongst dehydration reactions. The thermodynamics of this reaction is
+here investigated, by combining, comparing and contrasting
+calorimetric measurements and data with Raman and IR spectra of the
+relevant substances (gypsum, bassanite, and water).
+
+A suite of octave functions and routines help to uncover some of the
+reasons behind the peculiarities of this dehydration.
