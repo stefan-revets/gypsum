@@ -1,0 +1,260 @@
+#+TITLE: Thermodynamics of the dehydration of Gypsum
+#+OPTIONS: toc:nil
+#+LATEX_HEADER: \usepackage{chicago}
+#+LATEX_HEADER: \usepackage[squaren]{SIunits}
+
+* Introduction
+The dehydration of gypsum is a well known, important reaction, with
+wide applications. It forms the core of the cement and plaster
+industry and it is of great import for the conservation and
+restoration of buildings and of paintings
+\cite{charola-al07:gypsum}. It is also a very important reaction for
+geology, as it is used as a model system to help and understand
+tectonic systems in which dewatering and porosity genesis plays a
+central role. A very large body of knowledge has accumulated over the
+years, addressing the wide variety of aspects of the dehydration
+\cite{charola-al07:gypsum,freyer-voigt03:crystallization}. Notwithstanding
+the progress made, important questions remain.
+
+The reaction schemes of the dehydration of gypsum have been written
+out as
+\begin{equation}
+  \label{eq:anhydrite_reaction}
+CaSO_4\cdot2H_2O \rightarrow CaSO_4 + 2 H_2O
+\end{equation}
+in which gypsum dehydrates directly into anhydrite, or
+\begin{eqnarray}
+  \label{eq:bassanite_reaction}
+CaSO_4\cdot2H_2O & \rightarrow & CaSO_4\cdot\frac{1}{2}H_2O + \frac{3}{2} H_2O \\
+                 & \rightarrow & CaSO_4 + 2 H_2O  
+\end{eqnarray}
+in which gypsum first dehydrates into the hemi-hydrate bassanite which
+in turn dehydrates into $\gamma$-anhydrite a compound which can
+rehydrate back to bassanite and gypsum (it takes prolonged heating at
+higher temperatures to obtain stable, water-resistant anhydrite). Both
+these reactions have been used to describe what happens during
+dehydration, and experimental evidence has been reported in the
+literature to support both. The single-step reaction is supported by
+\citeNP{carbone-al08:kinetics,prasad-al90:direct}, while the two-step
+reaction is supported by
+\citeNP{ballirano-melis09:thermal-gypsum,chang-al99:raman,sarma-al98:raman,seufert-al09:discrimination}.
+
+* Crystallography
+The crystallographic properties of the different compounds are listed
+in this Table
+
+#+CAPTION: Crystallography of CaSO_4 minerals
+| Substance        | Space Group       |  Z |           a |           b |           c |     \beta |    V_m |
+|                  |                   |    | (\angstrom) | (\angstrom) | (\angstrom) | (\degree) |     ml |
+|------------------+-------------------+----+-------------+-------------+-------------+-----------+--------|
+| gypsum           | C^6_{2h}--I12/a1  |  4 |    5.679(5) |  15.202(14) |    6.522(6) |    118.43 | 74.545 |
+| bassanite        | C^3_2--I121       | 12 |  12.0317(4) |   6.9269(2) |  12.6713(3) |     90.27 | 52.997 |
+| \gamma-anhydrite | D^{6}_{2}--C222   |  6 |  12.0777(7) |    6.9723(4 |   6.3040(2) |     90.00 | 53.281 |
+| anhydrite        | D^{17}_{2h}--Cmcm |  4 |    6.993(2) |    6.995(2) |    6.245(1) |     90.00 | 45.991 |
+
+The data sources are \citeNP{bezou-al95:structure,bideaux-al90:handbook,hahn92:tables,hawthorne-ferguson75:anhydrous,pedersen-semmingsen82:neutron}. 
+
+We can glean immediately from this table that the dehydration is
+accompanied by a volume reduction, regardless of the reaction scheme
+followed. It is also clear that the dehydration causes an increase in
+symmetry of the crystals, as we move from the monoclinic gypsum (space
+group 15), over the monoclinic bassanite (space group 5) to the
+orthorhombic \gamma-anhydrite (space group 21) and orthorhombic
+anhydrite (space group 63).
+
+The organisation of the atoms and molecules in their respective
+crystal lattices (see Figure) is of direct relevance. The disposition
+of the water molecules as sheets perpendicular to the c-axis between
+the calcium and sulfate layers in the gypsum lattice (Figure ) helps
+to explain the excellent cleavage properties of the mineral
+\cite{freyer-voigt03:crystallization}. It also shows the relative
+freedom of the water molecules and the potential for electrostatic
+interaction amongst themselves \cite{schofield-al96:expansion}. These
+interactions go quite some way in helping to explain the much larger
+heat capacity of gypsum, compared to the other compounds.
+
+The disposition of the water molecules in bassanite (Figure) is very
+different from that found in gypsum. Instead of sheet-like layers, we
+find two types of water molecules. There are relatively tight clusters
+of 4 molecules, regularly disposed in about 4 \angstrom{} diameter
+channel-like conduits along the c-axis, left open between CaO_8
+polyhedra and two, much more isolated molecules
+\cite{freyer-voigt03:crystallization}. This led
+\citeNP{voigtlaender-al03:bassanite} and
+\citeNP{comodi-al09:bassanite} to describe bassanite as a nanoporous
+host-guest system in which the sulfate molecules play host and water
+molecules the guest.
+
+The lower amount, as well as the different organization of the water
+molecules in bassanite help to explain its significantly lower heat
+capacity, compared to the fully hydrated gypsum.
+
+* Thermodynamics
+** Gibbs Free Energy of a reaction reaching equilibrium
+Reactants $\rightarrow$ Products
+
+Such a reaction will achieve equilibrium when
+\begin{eqnarray}
+  \Delta G_r(T_e,P_e) & = & 0\\
+  & = & \Delta G_{f,Products}(T_e,P_e) - \Delta G_{f,Reactants}(T_e,P_e)
+\end{eqnarray}
+ The question then is, what are
+\begin{equation}
+  \Delta G_{f,Products}(T_e,P_e), \Delta G_{f,Reactants}(T_e,P_e) = \, ?
+\end{equation}
+
+We can calculate the Gibbs Free Energy at equilibium T and P from
+\begin{equation}
+  \Delta G_f(T_e,P_e) = \Delta G^0_f(T_0,P_0) - \int_{T_0}^{T_e} S_f(T) dT + \int_{P_0}^{P_e} V_f(P) dP
+\end{equation}
+and, as a result, we can write that
+\begin{equation}
+  \Delta G_r(T_e,P_e)  =  \Delta G^0_{r,f}(T_0,P_0) - \int_{T_0}^{T_e} \Delta S_r(T) dT + \int_{P_0}^{P_e} \Delta V_r(P) dP
+\end{equation}
+
+In actual practice, we need to get access to the Entropy in order to
+be able to calculate the Gibbs Free Energy. This follows directly from
+\begin{equation}
+  S(T_e) = \int_0^{T_e} \frac{C_p}{T} dT
+\end{equation}
+Since the heat capacity is usually available in various tables as
+polynomials in T, this integration can be carried out very easily.
+
+We also need a Volume function, something that is not immediately
+obvious. We can define the properties
+\begin{eqnarray}
+  \alpha & = & \frac{1}{V}\frac{\partial V}{\partial T}\\
+  \beta  & = & -\frac{1}{V}\frac{\partial V}{\partial P}
+\end{eqnarray}
+the isobaric thermal expansion and isothermal compressibility,
+respectively.  Measurements on a wide variety of minerals and rocks
+show that
+\begin{eqnarray}
+  \alpha & = & 1 - 4 \cdot 10^{-5}/K\\
+  \beta  & = & 0.5 - 3 \cdot 10^{-11}/Pa
+\end{eqnarray}
+and so, the volume function of solids can be considered constant over
+substantial temperature and pressure ranges
+\cite{carmichael77:equilibria}.
+
+The end result is that we can write the Gibbs Free Energy of the
+reaction at T and P as
+\begin{equation}
+  \Delta G_r(T_e,P_e)  =  \Delta G^0_{r,f}(T_0,P_0) - \int_{T_0}^{T_e} \Delta S_r(T) dT + (P_e-P_0)\Delta V_r
+\end{equation}
+in which the $\Delta G^0_{r,f}(T_0,P_0)$ is the algebraic (and
+stoechiometrically correct) sum of the Gibbs Free Energy of formation
+at standard temperature and pressure of all the compounds present in
+the reaction scheme (which can be found in standard tables for a great
+many minerals). The entropy function again can be calculated from the
+algebraic and stoechiometrically correct sum of the participating
+compounds (best through simple polynomials in $T$), again available
+from standard tables.
+
+** Volatiles
+The discussion up til now addressed the thermodynamics of reactions of
+solids. Once volatiles or fluids appear, the matter becomes more
+complex. The increased complexity is due of course to the Volume
+function, which for volatiles or fluids is usually not a simple
+function of T and P.
+
+The question we have to address for volatiles is
+\begin{equation}
+  \int_{P_0}^{P_e} V_f(P) dP = \, ?
+\end{equation}
+
+There are fortunately two ways in which we can try and solve this
+question. One way is through the Gibbs Energy, and the other is
+through the fugacity
+\begin{eqnarray}
+  \int_{P_0}^{P_e} V_{vol}(P) dP & = & G_{vol}(T_e,P_e) - G_{vol}(T_e,P_0)\\
+  & = & R T_e \log_e \frac{f(T_e,P_e)}{f(T_0,P_0)}
+\end{eqnarray}
+Both for $H_2O$ and $CO_2$, tables exist listing properties over a
+wide range of temperature and pressure conditions.
+
+** Thermodynamic properties from calorimetry
+The basic thermodynamic properties of the three sulfates have been
+measured calorimetrically \cite{kelley-al41:properties}, but these
+measurements necessarily shy away from temperatures at which hydration
+or dehydration take place (see Figure). The measurements of heat
+capacity allowed the calculation of the other, fundamental
+thermodynamic properties, summarized in this table (from
+\citeNP{wagman-al82:tables})
+
+#+CAPTION: Thermodynamic Properties
+| Substance          | \Delta H^0_f | \Delta G^0_f |       S^0 |       C_P |      V |
+|                    |     (kJ/mol) |     (kJ/mol) | (J/K mol) | (J/K mol) |   (ml) |
+|--------------------+--------------+--------------+-----------+-----------+--------|
+| gypsum             |      -2022.5 |      -1796.9 |    194.10 |    186.31 | 74.545 |
+| bassanite          |      -1576.2 |      -1436.2 |    130.63 |    119.74 | 52.997 |
+| $\gamma$-anhydrite |      -1425.2 |      -1313.4 |    108.40 |    100.21 | 53.281 |
+| anhydrite          |      -1433.6 |      -1321.2 |    106.76 |     99.65 | 45.991 |
+| water(l)           |       -286.0 |       -237.4 |     69.99 |     75.35 | 18.015 |
+| water(g)           |       -242.0 |       -228.8 |    188.85 |     33.60 |        |
+
+
+The data can and have then been used to calculate the Haas-Fisher
+polynomials for the heat capacity. As these polynomials do not
+extrapolate at all well, the validity range of the polynomials remains
+restricted to the temperature interval of the actual measurements.
+
+** Reaction thermodynamics
+Applying Hess's law, we can use these standard thermodynamic
+properties to calculate energy, entropy and estimate the equilibrium
+temperature of the reactions and obtain the results shown in this
+table. 
+
+#+CAPTION: Reaction thermodynamics
+| Reaction Products             | \Delta H^0_r | \Delta G^0_r | \Delta S_r |  T_eq | \Delta V_r |
+|                               |     (kJ/mol) |     (kJ/mol) |  (J/K mol) |   (K) |       (ml) |
+|-------------------------------+--------------+--------------+------------+-------+------------|
+| bassanite + water(g)          |        83.32 |        17.58 |     219.81 | 379.0 |     -21.55 |
+| bassanite + water(l)          |        17.26 |         4.68 |      41.51 | 415.7 |       5.45 |
+| $\gamma$-anhydrite + water(g) |       113.28 |        25.98 |     292.00 | 387.9 |     -21.26 |
+| $\gamma$-anhydrite + water(l) |        25.20 |         8.78 |      54.27 | 464.3 |      14.74 |
+| anhydrite + water(g)          |       104.92 |        18.20 |     290.36 | 361.3 |     -28.55 |
+| anhydrite + water(l)          |        16.84 |         1.00 |      52.63 | 320.0 |       7.45 |
+
+These theoretical calculations fit the values measured by
+\citeNP{kelley-al41:properties} very well.
+
+The negative values for the reaction volumes in Table indicate that
+the volume of the reaction products upon completion is larger than
+that of the start product. It means that there is only sufficient
+space to accomodate part of the water liberated through
+dehydration. In a closed system, this would entail a pressure build-up
+which follows immediately from the ideal gas law, i.e.,
+\begin{eqnarray}
+  \label{eq:pressure_buildup}
+  p & = & \frac{n\, R\, T}{V} \\
+    & = & \frac{1.5\, R\, 388}{21.33\, 10^{-6}}\\
+    & = & 225\, MPa
+\end{eqnarray}
+in which $V$ is the volume available after the conversion of gypsum to
+bassanite. We can conclude from this that the dehydration reaction in
+a closed system will come to a halt well before completion.
+
+** Thermodynamic properties from vibrational data
+The application of statistical mechanics allows us to estimate heat
+capacity, entropy and free energy from vibrational spectra
+\cite{kieffer79:thermodynamics1,hofmeister-al87:beryllium}. Using the
+results obtained by \citeNP{iishi79:phonon} and
+\citeNP{ross74:sulphates} for the vibrational spectra (see Figure ),
+calculations fail to fit the measured heat capacity (see Figure ) for
+the hydrated components.  Clearly, the nature of the water molecules
+within the crystal lattice and its interactions (both with the oxygen
+atoms of the sulfate groups as with other water molecules) is more
+complex than the models proposed by \citeNP{kieffer79:thermodynamics1}
+and \citeNP{hofmeister-al87:beryllium} cater for.
+
+* Data and Analysis
+
+** Data Analysis
+
+* Results
+
+\bibliography{journals,geology,maths,thermodynamics,gypsum}
+\bibliographystyle{chicago}
+
+
