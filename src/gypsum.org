@@ -249,10 +249,192 @@ complex than the models proposed by \citeNP{kieffer79:thermodynamics1}
 and \citeNP{hofmeister-al87:beryllium} cater for.
 
 * Data and Analysis
+For now, here is the collection of octave code used to carry out the
+various calculations, but these have to be re-organised and brought
+into the correct order.
+
+:PROPERTIES:
+:session: *octave*
+:END:
+
+Procedure to calculate the stability fields in the dehydration
+reaction of gypsum over bassanite to gamma anhydrite using
+thermodynamical principles based on minimising the Gibbs Free Energy
+of the reaction.
+
+Let us begin with defining various constants and coefficients
+#+BEGIN_SRC octave
+  R   = 8.314510;     # Gas Constant, J/K mol
+  T_0 = 298;          # Standard Temperature, K
+  P_0 = 101325;       # Standard Pressure, Pa
+#+END_SRC
+
+as well as the various Thermodynamic Data and derived data (Wagman et
+al, 1982). These are in order Enthalpy (J/mol), Gibbs Energy (J/mol),
+Entropy (J/ K mol), Heat Capacity (J/K mol), Molar Volume (m^3)
+#+BEGIN_SRC octave
+  gypsum    = [-2022500 -1796900 194.10 186.31 74.545e-6];
+  bassanite = [-1576200 -1436200 130.63 119.74 52.997e-6];
+  anhydrite = [-1425200 -1313400 108.40 100.21 53.281e-6];
+#+END_SRC
+
+Straight 3rd degree polynomials of the Entropy, calculated directly
+from the Kieffer-Hofmeister heat capacity vibrational spectrum fit to
+the calorimetric data as well. The entropy here is the result of
+           S = Int Cp/T dT
+between 0 K and T, and fitted with a simple polynomial
+
+#+BEGIN_SRC octave
+  entropy_anhydrite = [9.5209e-8 -3.1818e-4 4.9417e-1 -13.473];
+  entropy_bassanite = [1.1212e-7 -3.9129e-4 6.0593e-1 -18.103];
+  entropy_gypsum    = [1.2741e-7 -5.0015e-4 8.6446e-1 -24.442];
+
+  entropy_water     = [     0          0         0    233    ];
+
+#+END_SRC
+
+The integration of the reaction entropy is straightforward as
+we are using straight (3rd degree) polynomials, valid from 0 K
+onwards, i.e.,
+     S = aT^3 + bT^2 + cT + d
+and hence
+    Int(S) = aT^4/4 + bT^3/3 + cT^2/2 + dT + 0
+which we can evaluate directly with octave's polyval
+
+#+BEGIN_SRC octave
+  function y = entropy_integral(entropy_polynomial,T_0,T_e)
+  P = [entropy_polynomial 0] .*[1/4 1/3 1/2 1 1];
+  y = polyval(P,T_e)-polyval(P,T_0);
+  endfunction
+
+#+END_SRC
+
+Calculate the gibbs free energy of the reaction at (T_e, P_0) of the
+solid phases only. The part played by H_{2}O is dealt with separately
+
+#+BEGIN_SRC octave
+  function y = gibbs_e(gibbs_0,reaction_entropy_polynomial,T_0,T_e)
+  y = gibbs_0 - entropy_integral(reaction_entropy_polynomial,T_0,T_e);
+  endfunction
+
+#+END_SRC
+
+Calculate the reaction parameters for the solids only
+First get reaction changes in Enthalpy, Gibbs Free energy, entropy,
+heat capacity (which is rather meaningless, so ignore it) and volume
+through the Hess Law
+
+#+BEGIN_SRC octave
+  reaction_bassanite = bassanite .- gypsum;
+  reaction_anhydrite = anhydrite .- bassanite;
+
+  #reaction_full = anhydrite .- gypsum;
+
+#+END_SRC
+
+Calculate the reaction change for the entropy polynomials of the
+solids using the same logic as for the previous step
+
+#+BEGIN_SRC octave
+  reaction_entropy_bassanite = entropy_bassanite .+ ...
+                               1.5 .* entropy_water .- entropy_gypsum;
+  reaction_entropy_anhydrite = entropy_anhydrite .+ ...
+                               0.5 .* entropy_water .- entropy_bassanite;
+
+  #reaction_entropy_full = entropy_anhydrite .+ ...
+  #                       2.0 .* entropy_water .- entropy_gypsum;
+#+END_SRC
+
+Loop over Temperature to calculate the Gibbs energy
+#+BEGIN_SRC octave
+  for i = 1:201
+    T_e = 272 + i;
+    bassanite_gibbs_e(i) = gibbs_e(reaction_bassanite(2),
+                                   reaction_entropy_bassanite,T_0,T_e);
+    anhydrite_gibbs_e(i) = gibbs_e(reaction_anhydrite(2),
+                                   reaction_entropy_anhydrite,T_0,T_e);
+
+  #  full_gibbs_e(i) = gibbs_e(reaction_full(2),
+  #                           reaction_entropy_full,T_0,T_e);
+
+  endfor
+
+#+END_SRC
+
+Note that in order to print graphs correctly, gnuplot needs to
+specified as graphics toolkit, and, it is also necessary to use the
+cairo-based output formats (e.g., -dpdfcairo, -depscairo); otherwise
+you end up with a black rectangle.
+#+BEGIN_SRC octave :exports both :results file
+  load ../cache/gibbs_star.d
+
+  for i = 1:201
+    gibbs_result_bassanite(:,i) = gibbs_star(:,i).* 1.5 .+ ...
+                                  bassanite_gibbs_e'; 
+    gibbs_result_anhydrite(:,i) = gibbs_star(:,i).* 0.5 .+ ...
+                                  anhydrite_gibbs_e'; 
+  #  gibbs_result_full(:,i) = gibbs_star(:,i).* 2.0 .+ ...
+  #                          full_gibbs_e'; 
+  endfor
+
+  temperature = [273:473]';
+  pressure = [1:201]'.*500;
+
+  load ../cache/my_pressure.d
+
+  graphics_toolkit gnuplot
+  figure()
+
+  hold on;
+  contour(temperature,pressure,gibbs_result_bassanite',
+          [-0.001,0,0.001]);
+  contour(temperature,pressure,gibbs_result_anhydrite',
+          [-0.001,0,0.001]);
+  #contour(temperature,pressure,gibbs_result_full',
+  #       [-0.001,0,0.001]);
+
+  plot(my_pressure(:,1),my_pressure(:,2),'-r');
+  xlabel('Temperature (K)');
+  ylabel('Pressure (Pa)');
+  title('Phase diagram Unconfined Gypsum Dehydration');
+  axis([273,423,0,100000]);
+  text(330,29000,'H_2O Liquid-Vapour');
+  text(355,50000,'Gypsum-Bassanite');
+  text(365,20000,'Bassanite-Anhydrite');
+  hold off;
+  print -dpdfcairo ../output/unconfined.pdf;
+  ans = '../output/unconfined.pdf'
+#+END_SRC
+
+
+** Miscellaneous
+
+#+BEGIN_SRC octave
+  function S = calc_entropy(poly,T)
+    S = poly(1) .+ poly(2).*log(T) .+ poly(3).*T .+ ...
+        poly(4)./(T.^2) .+ poly(5).*(T.^2) .+ poly(6)./sqrt(T);
+  endfunction
+#+END_SRC
+
+A similar function can be defined to calculate the isobaric heat
+capacity C_p, from the Haas-Fischer polynomial a1 + a2 * T + a3 *
+T^{-2} + a4 * T^2 + a5 * T^{-1/2}
+
+#+BEGIN_SRC octave
+  function C = Cp(Mineral,T)
+    C = T.*Mineral(2) .+ Mineral(3)./(T.^2) .+ Mineral(4).*(T.^2) .+ ...
+        Mineral(5)./(sqrt(T)) .+ Mineral(1);
+  endfunction
+
+#+END_SRC
+
+
+
 
 ** Data Analysis
 
 * Results
+
 
 \bibliography{journals,geology,maths,thermodynamics,gypsum}
 \bibliographystyle{chicago}
